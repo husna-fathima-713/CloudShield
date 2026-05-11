@@ -1,0 +1,19 @@
+Directive 2: If You Refuse to Pivot (The Hard Path)
+If you insist on using your user account, you must manually enable the Group Policy Editor for Windows Home before you can access secpol.msc. This involves running a batch script to "unlock" the hidden files already on your system.
+
+Open Notepad.
+
+Paste the following:
+
+Code snippet
+@echo off 
+pushd "%~dp0" 
+dir /b %SystemRoot%\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientExtensions-Package~3*.mum >List.txt 
+dir /b %SystemRoot%\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientTools-Package~3*.mum >>List.txt 
+for /f %%i in ('findstr /i . List.txt 2^>nul') do dism /online /norestart /add-package:"%SystemRoot%\servicing\Packages\%%i" 
+pause
+Save it as gpedit_enabler.bat on your Desktop.
+
+Right-click and Run as Administrator.
+
+Restart your machine. secpol.msc will now work.
