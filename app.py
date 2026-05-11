@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request
+import os
+
 from src.parser import read_log_file
 from src.detector import detect_failed_logins
-import os
 
 app = Flask(__name__)
 
@@ -46,3 +47,7 @@ def upload_file():
         result = "<h2>No suspicious activity detected.</h2>"
 
     return result
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
