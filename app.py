@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 import os
 
 from src.parser import read_log_file
-from src.detector import detect_failed_logins
+from src.detector import analyze_logs
 
 app = Flask(__name__)
 
@@ -32,19 +32,37 @@ def upload_file():
 
     log_lines = read_log_file(filepath)
 
-    suspicious_ips = detect_failed_logins(log_lines)
+    alerts = analyze_logs(log_lines)
 
-    result = ""
+    result = "<h1>CloudShield Analysis Report</h1>"
 
-    if suspicious_ips:
+    if alerts:
 
-        result += "<h2>Suspicious Activity Detected</h2>"
+        result += """
+        <table border='1' cellpadding='10'>
+            <tr>
+                <th>IP Address</th>
+                <th>Threat Type</th>
+                <th>Risk Level</th>
+                <th>Occurrences</th>
+            </tr>
+        """
 
-        for ip, count in suspicious_ips:
-            result += f"<p>{ip} → Failed Attempts: {count}</p>"
+        for alert in alerts:
+
+            result += f"""
+            <tr>
+                <td>{alert['ip']}</td>
+                <td>{alert['type']}</td>
+                <td>{alert['risk']}</td>
+                <td>{alert['count']}</td>
+            </tr>
+            """
+
+        result += "</table>"
 
     else:
-        result = "<h2>No suspicious activity detected.</h2>"
+        result += "<h2>No suspicious activity detected.</h2>"
 
     return result
 

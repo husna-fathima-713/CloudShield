@@ -1,9 +1,12 @@
 from collections import defaultdict
 
 
-def detect_failed_logins(log_lines):
+def analyze_logs(log_lines):
 
-    failed_attempts = defaultdict(int)
+    failed_logins = defaultdict(int)
+    port_scans = defaultdict(int)
+    unknown_access = defaultdict(int)
+    excessive_requests = defaultdict(int)
 
     for line in log_lines:
 
@@ -13,16 +16,56 @@ def detect_failed_logins(log_lines):
             continue
 
         ip = parts[0]
-        status = parts[1]
+        activity = parts[1]
 
-        if status == "LOGIN_FAILED":
-            failed_attempts[ip] += 1
+        if activity == "LOGIN_FAILED":
+            failed_logins[ip] += 1
 
-    suspicious_ips = []
+        elif activity == "PORT_SCAN":
+            port_scans[ip] += 1
 
-    for ip, count in failed_attempts.items():
+        elif activity == "UNKNOWN_ACCESS":
+            unknown_access[ip] += 1
 
+        elif activity == "REQUEST":
+            excessive_requests[ip] += 1
+
+    alerts = []
+
+    for ip, count in failed_logins.items():
         if count >= 3:
-            suspicious_ips.append((ip, count))
+            alerts.append({
+                "ip": ip,
+                "type": "Brute Force Attempt",
+                "risk": "HIGH",
+                "count": count
+            })
 
-    return suspicious_ips
+    for ip, count in port_scans.items():
+        if count >= 2:
+            alerts.append({
+                "ip": ip,
+                "type": "Port Scanning",
+                "risk": "MEDIUM",
+                "count": count
+            })
+
+    for ip, count in unknown_access.items():
+        if count >= 2:
+            alerts.append({
+                "ip": ip,
+                "type": "Unknown Access",
+                "risk": "HIGH",
+                "count": count
+            })
+
+    for ip, count in excessive_requests.items():
+        if count >= 5:
+            alerts.append({
+                "ip": ip,
+                "type": "Request Flooding",
+                "risk": "MEDIUM",
+                "count": count
+            })
+
+    return alerts
