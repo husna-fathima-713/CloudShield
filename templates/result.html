@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CloudShield Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #222;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #1f4e79;
+            color: white;
+        }
+
+        .HIGH {
+            color: red;
+            font-weight: bold;
+        }
+
+        .MEDIUM {
+            color: orange;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>CloudShield Analysis Report</h1>
+
+    {% if alerts %}
+    <table>
+        <tr>
+            <th>IP Address</th>
+            <th>Threat Type</th>
+            <th>Risk Level</th>
+            <th>Occurrences</th>
+        </tr>
+
+        {% for alert in alerts %}
+        <tr>
+            <td>{{ alert.ip }}</td>
+            <td>{{ alert.type }}</td>
+            <td class="{{ alert.risk }}">{{ alert.risk }}</td>
+            <td>{{ alert.count }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <h2>No suspicious activity detected.</h2>
+    {% endif %}
+
+</body>
+</html>

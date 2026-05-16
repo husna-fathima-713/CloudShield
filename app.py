@@ -34,37 +34,7 @@ def upload_file():
 
     alerts = analyze_logs(log_lines)
 
-    result = "<h1>CloudShield Analysis Report</h1>"
-
-    if alerts:
-
-        result += """
-        <table border='1' cellpadding='10'>
-            <tr>
-                <th>IP Address</th>
-                <th>Threat Type</th>
-                <th>Risk Level</th>
-                <th>Occurrences</th>
-            </tr>
-        """
-
-        for alert in alerts:
-
-            result += f"""
-            <tr>
-                <td>{alert['ip']}</td>
-                <td>{alert['type']}</td>
-                <td>{alert['risk']}</td>
-                <td>{alert['count']}</td>
-            </tr>
-            """
-
-        result += "</table>"
-
-    else:
-        result += "<h2>No suspicious activity detected.</h2>"
-
-    return result
+    return render_template("result.html", alerts=alerts)
 
 
 if __name__ == "__main__":
