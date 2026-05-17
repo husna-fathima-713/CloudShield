@@ -3,10 +3,13 @@ import os
 
 from src.parser import read_log_file
 from src.detector import analyze_logs
+from src.cloud_upload import upload_to_s3
 
 app = Flask(__name__)
 
 UPLOAD_FOLDER = "uploads"
+S3_BUCKET = "cloudshield-log-storage-hf"
+
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
@@ -28,10 +31,14 @@ def upload_file():
 
     filepath = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
 
+    # Save locally
     file.save(filepath)
 
-    log_lines = read_log_file(filepath)
+    # Upload to AWS S3
+    upload_to_s3(filepath, S3_BUCKET, file.filename)
 
+    # Analyze log file
+    log_lines = read_log_file(filepath)
     alerts = analyze_logs(log_lines)
 
     return render_template("result.html", alerts=alerts)
