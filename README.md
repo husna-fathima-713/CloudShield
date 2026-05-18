@@ -32,14 +32,15 @@ CloudShield/
 ├── requirements.txt
 ├── uploads/
 ├── data/
-├── screenshots/
 ├── templates/
 │   ├── index.html
 │   └── result.html
+│
 └── src/
     ├── parser.py
     ├── detector.py
     └── cloud_upload.py
+
 
 ## How It Works
 
@@ -80,5 +81,4 @@ The system currently detects:
 
 ## Author
 
-Kerr  
-CSE - IoT, Cybersecurity, Blockchain
+HF
