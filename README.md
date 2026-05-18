@@ -32,10 +32,10 @@ CloudShield/
 ├── requirements.txt
 ├── uploads/
 ├── data/
+├── screenshots/
 ├── templates/
 │   ├── index.html
 │   └── result.html
-│
 └── src/
     ├── parser.py
     ├── detector.py
@@ -43,12 +43,23 @@ CloudShield/
 
 ## How It Works
 
-1. User uploads a log file
-2. Flask saves file locally
-3. File is uploaded to AWS S3 bucket
-4. Log entries are parsed
-5. Threat patterns are detected
-6. Analysis report is shown in browser
+1. User uploads a log file  
+2. Flask saves file locally  
+3. File is uploaded to AWS S3 bucket  
+4. Log entries are parsed  
+5. Threat patterns are detected  
+6. Analysis report is shown in browser  
+
+## Screenshots
+
+### Upload Interface
+![Upload Page](screenshots/1.jpeg)
+
+### Threat Detection Dashboard
+![Threat Report](screenshots/2.jpeg)
+
+### AWS S3 Cloud Storage
+![S3 Storage](screenshots/3.jpeg)
 
 ## Sample Threat Detection
 
@@ -64,9 +75,10 @@ The system currently detects:
 - Real-time log streaming
 - Email alerts for high-risk attacks
 - Dashboard charts
-- Live cloud deployment
+- Live deployment
 - Machine learning anomaly detection
 
 ## Author
 
-HF
+Kerr  
+CSE - IoT, Cybersecurity, Blockchain
