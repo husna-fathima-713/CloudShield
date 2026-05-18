@@ -26,16 +26,16 @@ It analyzes uploaded log files, detects suspicious network/security activity, an
 
 ## Project Structure
 
+```text
 CloudShield/
-│
 ├── app.py
 ├── requirements.txt
 ├── uploads/
 ├── data/
+├── screenshots/
 ├── templates/
 │   ├── index.html
 │   └── result.html
-│
 └── src/
     ├── parser.py
     ├── detector.py
