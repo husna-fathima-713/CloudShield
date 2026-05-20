@@ -4,6 +4,7 @@ import os
 from src.parser import read_log_file
 from src.detector import analyze_logs
 from src.cloud_upload import upload_to_s3
+from src.alerter import send_alert
 
 app = Flask(__name__)
 
@@ -40,6 +41,19 @@ def upload_file():
     # Analyze log file
     log_lines = read_log_file(filepath)
     alerts = analyze_logs(log_lines)
+
+    # Send email alert for HIGH risk events
+    for alert in alerts:
+        if alert["risk"] == "HIGH":
+            message = f"""
+CloudShield detected a HIGH risk event.
+
+IP: {alert['ip']}
+Threat: {alert['type']}
+Occurrences: {alert['count']}
+"""
+            send_alert(message)
+            break
 
     return render_template("result.html", alerts=alerts)
 
